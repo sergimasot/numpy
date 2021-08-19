@@ -7307,7 +7307,7 @@ class TestNewBufferProtocol:
             memoryview(arr)
 
     def test_max_dims(self):
-        a = np.empty((1,) * 32)
+        a = np.empty((1,) * 64)
         self._check_roundtrip(a)
 
     @pytest.mark.slow
@@ -7318,10 +7318,10 @@ class TestNewBufferProtocol:
                 t = dim * t
             return t
 
-        # construct a memoryview with 33 dimensions
-        c_u8_33d = make_ctype((1,)*33, ctypes.c_uint8)
-        m = memoryview(c_u8_33d())
-        assert_equal(m.ndim, 33)
+        # construct a memoryview with 65 dimensions
+        c_u8_65d = make_ctype((1,)*65, ctypes.c_uint8)
+        m = memoryview(c_u8_65d())
+        assert_equal(m.ndim, 65)
 
         assert_raises_regex(
             RuntimeError, "ndim",
@@ -7329,8 +7329,8 @@ class TestNewBufferProtocol:
 
         # The above seems to create some deep cycles, clean them up for
         # easier reference count debugging:
-        del c_u8_33d, m
-        for i in range(33):
+        del c_u8_65d, m
+        for i in range(65):
             if gc.collect() == 0:
                 break
 
